@@ -10,6 +10,7 @@ import { Mockup, MockupFrame } from "../../ui/mockup";
 import Glow from "../../ui/glow";
 import Github from "../../logos/github";
 import Screenshot from "../../ui/screenshot";
+import { AnimatedTooltipPreview } from "@/components/AnimatedTooltipPreview";
 
 interface HeroButtonProps {
   href: string;
@@ -33,25 +34,15 @@ export default function Hero({
   description = "Professionally designed blocks and templates built with React, Shadcn/ui and Tailwind that will help your product stand out.",
   mockup = (
     <Screenshot
-      srcLight="/app-light.png"
-      srcDark="/app-dark.png"
+ srcLight="/light.png"
+ srcDark="/dark.png"
       alt="Launch UI app screenshot"
       width={1248}
       height={765}
       className="w-full"
     />
   ),
-  badge = (
-    <Badge variant="outline" className="animate-appear">
-      <span className="text-muted-foreground">
-        New version of Launch UI is out!
-      </span>
-      <a href={siteConfig.getStartedUrl} className="flex items-center gap-1">
-        Get started
-        <ArrowRightIcon className="size-3" />
-      </a>
-    </Badge>
-  ),
+  badge = false,
   buttons = [
     {
       href: siteConfig.getStartedUrl,
@@ -77,6 +68,9 @@ export default function Hero({
       <div className="max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24">
         <div className="flex flex-col items-center gap-6 text-center sm:gap-12">
           {badge !== false && badge}
+          <div className="flex flex-col items-center justify-center w-full">
+            <AnimatedTooltipPreview />
+          </div>
           <h1 className="animate-appear from-foreground to-foreground dark:to-muted-foreground relative z-10 inline-block bg-linear-to-r bg-clip-text text-4xl leading-tight font-semibold text-balance text-transparent drop-shadow-2xl sm:text-6xl sm:leading-tight md:text-8xl md:leading-tight">
             {title}
           </h1>
