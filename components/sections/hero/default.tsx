@@ -11,6 +11,8 @@ import Glow from "../../ui/glow";
 import Github from "../../logos/github";
 import Screenshot from "../../ui/screenshot";
 import { AnimatedTooltipPreview } from "@/components/AnimatedTooltipPreview";
+import { Particles } from "@/components/magicui/particles";
+import { AnimatedGradientTextDemo } from "@/components/AnimatedGradientTextDemo";
 
 interface HeroButtonProps {
   href: string;
@@ -30,12 +32,12 @@ interface HeroProps {
 }
 
 export default function Hero({
-  title = "Give your big idea the design it deserves",
+  title = "Magic Ul is the new way to build landing pages.",
   description = "Professionally designed blocks and templates built with React, Shadcn/ui and Tailwind that will help your product stand out.",
   mockup = (
     <Screenshot
- srcLight="/light.png"
- srcDark="/dark.png"
+      srcLight="/light.png"
+      srcDark="/dark.png"
       alt="Launch UI app screenshot"
       width={1248}
       height={765}
@@ -45,12 +47,12 @@ export default function Hero({
   badge = false,
   buttons = [
     {
-      href: siteConfig.getStartedUrl,
+      href: "#",
       text: "Get Started",
       variant: "default",
     },
     {
-      href: siteConfig.links.github,
+      href: "#",
       text: "Github",
       variant: "glow",
       icon: <Github className="mr-2 size-4" />,
@@ -61,17 +63,31 @@ export default function Hero({
   return (
     <Section
       className={cn(
-        "fade-bottom overflow-hidden pb-0 sm:pb-0 md:pb-0",
+        "fade-bottom overflow-hidden pb-0 sm:pb-0 md:pb-0 relative min-h-screen", // Added relative and min-h-screen to Section
         className,
       )}
     >
-      <div className="max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24">
+      <Particles
+        className="absolute inset-0 -z-10"
+        quantity={100}
+        ease={80}
+        size={0.4}
+        staticity={30}
+      />
+      <div className="max-w-container mx-auto flex flex-col gap-12 pt-16 sm:gap-24 relative z-10"> {/* Ensure this div has z-index higher than background */}
         <div className="flex flex-col items-center gap-6 text-center sm:gap-12">
           {badge !== false && badge}
           <div className="flex flex-col items-center justify-center w-full">
-            <AnimatedTooltipPreview />
+            {/* Afficher AnimatedTooltipPreview à partir de md et au-dessus, cacher sur mobile */}
+            <div className="hidden md:block -mt-12">
+              <AnimatedTooltipPreview />
+            </div>
+            {/* Afficher AnimatedGradientTextDemo sur mobile, cacher à partir de md */}
+            <div className="block md:hidden -mt-40">
+              <AnimatedGradientTextDemo />
+            </div>
           </div>
-          <h1 className="animate-appear from-foreground to-foreground dark:to-muted-foreground relative z-10 inline-block bg-linear-to-r bg-clip-text text-4xl leading-tight font-semibold text-balance text-transparent drop-shadow-2xl sm:text-6xl sm:leading-tight md:text-8xl md:leading-tight">
+          <h1 className="animate-appear from-white to-gray-300 dark:from-gray-100 dark:to-gray-400 relative z-10 inline-block bg-linear-to-r bg-clip-text text-4xl leading-tight font-semibold text-balance text-transparent drop-shadow-2xl sm:text-6xl sm:leading-tight md:text-8xl md:leading-tight -mt-12">
             {title}
           </h1>
           <p className="text-md animate-appear text-muted-foreground relative z-10 max-w-[740px] font-medium text-balance opacity-0 delay-100 sm:text-xl">

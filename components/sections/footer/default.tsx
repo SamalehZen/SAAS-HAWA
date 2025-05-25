@@ -38,31 +38,31 @@ export default function FooterSection({
     {
       title: "Product",
       links: [
-        { text: "Changelog", href: siteConfig.url },
-        { text: "Documentation", href: siteConfig.url },
+        { text: "Changelog", href: "#" },
+        { text: "Documentation", href: "#" },
       ],
     },
     {
       title: "Company",
       links: [
-        { text: "About", href: siteConfig.url },
-        { text: "Careers", href: siteConfig.url },
-        { text: "Blog", href: siteConfig.url },
+        { text: "About", href: "#" },
+        { text: "Careers", href: "#" },
+        { text: "Blog", href: "#" },
       ],
     },
     {
       title: "Contact",
       links: [
-        { text: "Discord", href: siteConfig.url },
-        { text: "Twitter", href: siteConfig.url },
-        { text: "Github", href: siteConfig.links.github },
+        { text: "Discord", href: "#" },
+        { text: "Twitter", href: "#" },
+        { text: "Github", href: "#" },
       ],
     },
   ],
   copyright = "© 2025 Mikołaj Dobrucki. All rights reserved",
   policies = [
-    { text: "Privacy Policy", href: siteConfig.url },
-    { text: "Terms of Service", href: siteConfig.url },
+    { text: "Privacy Policy", href: "#" },
+    { text: "Terms of Service", href: "#" },
   ],
   showModeToggle = true,
   className,

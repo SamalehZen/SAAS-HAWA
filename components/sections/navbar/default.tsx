@@ -1,138 +1,145 @@
-import { ReactNode } from "react";
+"use client";
+import { ReactNode, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
-import { Menu } from "lucide-react";
+import { useScroll, useMotionValueEvent } from "motion/react";
 
-import Navigation from "../../ui/navigation";
-import { Button, type ButtonProps } from "../../ui/button";
 import {
-  Navbar as NavbarComponent,
-  NavbarLeft,
-  NavbarRight,
-} from "../../ui/navbar";
-import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
-import LaunchUI from "../../logos/launch-ui";
+  Navbar,
+  NavBody,
+  NavItems,
+  MobileNav,
+  MobileNavHeader,
+  MobileNavMenu,
+  MobileNavToggle,
+  NavbarLogo,
+  NavbarButton,
+} from "../../ui/resizable-navbar";
 
 interface NavbarLink {
-  text: string;
-  href: string;
+  name: string;
+  link: string;
 }
 
 interface NavbarActionProps {
   text: string;
   href: string;
-  variant?: ButtonProps["variant"];
-  icon?: ReactNode;
-  iconRight?: ReactNode;
+  variant?: "primary" | "secondary" | "dark" | "gradient";
   isButton?: boolean;
 }
 
-interface NavbarProps {
+interface DefaultNavbarProps {
   logo?: ReactNode;
   name?: string;
   homeUrl?: string;
-  mobileLinks?: NavbarLink[];
+  links?: NavbarLink[];
   actions?: NavbarActionProps[];
-  showNavigation?: boolean;
-  customNavigation?: ReactNode;
   className?: string;
 }
 
-export default function Navbar({
-  logo = <LaunchUI />,
-  name = "Launch UI",
+export default function DefaultNavbar({
+  logo,
+  name,
   homeUrl = siteConfig.url,
-  mobileLinks = [
-    { text: "Getting Started", href: siteConfig.url },
-    { text: "Components", href: siteConfig.url },
-    { text: "Documentation", href: siteConfig.url },
+  links = [
+    { name: "Features", link: "#features" },
+    { name: "Pricing", link: "#pricing" },
+    { name: "FAQ", link: "#faq" },
+    { name: "Blog", link: "#blog" },
   ],
   actions = [
-    { text: "Sign in", href: siteConfig.url, isButton: false },
+    { text: "Sign in", href: "#", isButton: false, variant: "secondary" },
     {
       text: "Get Started",
       href: siteConfig.url,
       isButton: true,
-      variant: "default",
+      variant: "primary",
     },
   ],
-  showNavigation = true,
-  customNavigation,
   className,
-}: NavbarProps) {
+}: DefaultNavbarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  // Removed useScroll and useMotionValueEvent as visibility will be constant
+  // const { scrollY } = useScroll({
+  //   target: ref,
+  //   offset: ["start start", "end start"],
+  // });
+  // const [visible, setVisible] = useState<boolean>(false);
+
+  // useMotionValueEvent(scrollY, "change", (latest) => {
+  //   if (latest > 100) {
+  //     setVisible(true);
+  //   } else {
+  //     setVisible(false);
+  //   }
+  // });
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <header className={cn("sticky top-0 z-50 -mb-4 px-4 pb-4", className)}>
-      <div className="fade-bottom bg-background/15 absolute left-0 h-24 w-full backdrop-blur-lg"></div>
-      <div className="max-w-container relative mx-auto">
-        <NavbarComponent>
-          <NavbarLeft>
-            <a
-              href={homeUrl}
-              className="flex items-center gap-2 text-xl font-bold"
-            >
-              {logo}
-              {name}
-            </a>
-            {showNavigation && (customNavigation || <Navigation />)}
-          </NavbarLeft>
-          <NavbarRight>
-            {actions.map((action, index) =>
-              action.isButton ? (
-                <Button
-                  key={index}
-                  variant={action.variant || "default"}
-                  asChild
-                >
-                  <a href={action.href}>
-                    {action.icon}
-                    {action.text}
-                    {action.iconRight}
-                  </a>
-                </Button>
-              ) : (
-                <a
+    <header className={cn("relative z-50", className)}> {/* Added header with relative position */}
+      <Navbar ref={ref} className={cn("top-0", className)} visible={true}>
+        <NavBody visible={true} children={
+          <>
+            <NavbarLogo />
+            <NavItems items={links} />
+            <div className="flex flex-row items-center gap-4">
+              {actions.map((action, index) => (
+                <NavbarButton
                   key={index}
                   href={action.href}
-                  className="hidden text-sm md:block"
+                  variant={action.variant}
+                  as={action.isButton ? "button" : "a"}
                 >
                   {action.text}
-                </a>
-              ),
-            )}
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="shrink-0 md:hidden"
-                >
-                  <Menu className="size-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                <nav className="grid gap-6 text-lg font-medium">
+                </NavbarButton>
+              ))}
+            </div>
+          </>
+        } />
+
+        <MobileNav visible={true} children={
+          <>
+            <MobileNavHeader children={
+              <>
+                <NavbarLogo />
+                <MobileNavToggle isOpen={isOpen} onClick={toggleMenu} />
+              </>
+            } />
+            <MobileNavMenu isOpen={isOpen} onClose={toggleMenu} children={
+              <>
+                {links.map((link, index) => (
                   <a
-                    href={homeUrl}
-                    className="flex items-center gap-2 text-xl font-bold"
+                    key={index}
+                    href={link.link}
+                    className="text-neutral-600 dark:text-neutral-300"
+                    onClick={toggleMenu}
                   >
-                    <span>{name}</span>
+                    {link.name}
                   </a>
-                  {mobileLinks.map((link, index) => (
-                    <a
+                ))}
+                <div className="flex flex-col gap-4">
+                  {actions.map((action, index) => (
+                    <NavbarButton
                       key={index}
-                      href={link.href}
-                      className="text-muted-foreground hover:text-foreground"
+                      href={action.href}
+                      variant={action.variant}
+                      as={action.isButton ? "button" : "a"}
+                      className="w-full"
+                      onClick={toggleMenu}
                     >
-                      {link.text}
-                    </a>
+                      {action.text}
+                    </NavbarButton>
                   ))}
-                </nav>
-              </SheetContent>
-            </Sheet>
-          </NavbarRight>
-        </NavbarComponent>
-      </div>
+                </div>
+              </>
+            } />
+          </>
+        } />
+      </Navbar>
     </header>
   );
 }

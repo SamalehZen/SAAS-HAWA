@@ -57,7 +57,7 @@ export default function Navigation({
     {
       title: "Documentation",
       isLink: true,
-      href: siteConfig.url,
+      href: "#",
     },
   ],
   components = [
@@ -100,22 +100,22 @@ export default function Navigation({
   logo = <LaunchUI />,
   logoTitle = "Launch UI",
   logoDescription = "Landing page template built with React, Shadcn/ui and Tailwind that you can copy/paste into your project.",
-  logoHref = siteConfig.url,
+  logoHref = "#",
   introItems = [
     {
       title: "Introduction",
-      href: siteConfig.url,
+      href: "#",
       description:
         "Re-usable components built using Radix UI and Tailwind CSS.",
     },
     {
       title: "Installation",
-      href: siteConfig.url,
+      href: "#",
       description: "How to install dependencies and structure your app.",
     },
     {
       title: "Typography",
-      href: siteConfig.url,
+      href: "#",
       description: "Styles for headings, paragraphs, lists...etc",
     },
   ],

@@ -1,4 +1,4 @@
-# 🚀 Launch UI – Next.js Website Components Template
+npx shadcn@latest add "https://21st.dev/r/lepikhinb/sparkles"# 🚀 Launch UI – Next.js Website Components Template
 
 A comprehensive collection of production-ready website components built with Next.js, Shadcn/ui, and Tailwind CSS. Perfect for developers looking to quickly build modern, responsive websites with the power of shadcn/ui components.
 
