@@ -2,7 +2,8 @@
 import { ReactNode, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
-import { useScroll, useMotionValueEvent } from "motion/react";
+// Removed useScroll and useMotionValueEvent as they are now handled in resizable-navbar.tsx
+// import { useScroll, useMotionValueEvent } from "motion/react";
 
 import {
   Navbar,
@@ -59,21 +60,8 @@ export default function DefaultNavbar({
   className,
 }: DefaultNavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  // Removed useScroll and useMotionValueEvent as visibility will be constant
-  // const { scrollY } = useScroll({
-  //   target: ref,
-  //   offset: ["start start", "end start"],
-  // });
-  // const [visible, setVisible] = useState<boolean>(false);
-
-  // useMotionValueEvent(scrollY, "change", (latest) => {
-  //   if (latest > 100) {
-  //     setVisible(true);
-  //   } else {
-  //     setVisible(false);
-  //   }
-  // });
+  const ref = useRef<HTMLDivElement>(null); // Keep ref for Navbar component
+  // Removed useScroll and useMotionValueEvent, and visible state as it's handled by Navbar itself
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -81,8 +69,8 @@ export default function DefaultNavbar({
 
   return (
     <header className={cn("relative z-50", className)}> {/* Added header with relative position */}
-      <Navbar ref={ref} className={cn("top-0", className)} visible={true}>
-        <NavBody visible={true} children={
+      <Navbar ref={ref} className={cn("top-0", className)}>
+        <NavBody children={
           <>
             <NavbarLogo />
             <NavItems items={links} />
@@ -101,7 +89,7 @@ export default function DefaultNavbar({
           </>
         } />
 
-        <MobileNav visible={true} children={
+        <MobileNav children={
           <>
             <MobileNavHeader children={
               <>
