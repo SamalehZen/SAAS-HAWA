@@ -14,7 +14,7 @@ import React, { useRef, useState, forwardRef } from "react";
 interface NavbarProps {
   children: React.ReactNode;
   className?: string;
-  ref?: React.Ref<HTMLDivElement>;
+  // ref?: React.Ref<HTMLDivElement>; // This ref is now handled by forwardRef directly
 }
 
 interface NavBodyProps {
@@ -51,9 +51,10 @@ interface MobileNavMenuProps {
 }
 
 export const Navbar = forwardRef<HTMLDivElement, NavbarProps>(({ children, className }, ref) => {
-  // const ref = useRef<HTMLDivElement>(null); // Removed, as ref is now passed via forwardRef
+  const localRef = useRef<HTMLDivElement>(null); // New local ref for useScroll
+
   const { scrollY } = useScroll({
-    target: ref,
+    target: localRef, // Use localRef here
     offset: ["start start", "end start"],
   });
   const [visible, setVisible] = useState<boolean>(false);
@@ -68,8 +69,14 @@ export const Navbar = forwardRef<HTMLDivElement, NavbarProps>(({ children, class
 
   return (
     <motion.div
-      ref={ref}
-      // IMPORTANT: Change this to class of `fixed` if you want the navbar to be fixed
+      ref={(node) => { // Combine refs
+        localRef.current = node;
+        if (typeof ref === "function") {
+          ref(node);
+        } else if (ref) {
+          (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }
+      }}
       className={cn("fixed inset-x-0 top-0 z-40 w-full", className)}
     >
       {React.Children.map(children, (child) =>
