@@ -8,12 +8,13 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, forwardRef } from "react";
 
 
 interface NavbarProps {
   children: React.ReactNode;
   className?: string;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 interface NavBodyProps {
@@ -49,8 +50,8 @@ interface MobileNavMenuProps {
   onClose: () => void;
 }
 
-export const Navbar = ({ children, className }: NavbarProps) => {
-  const ref = useRef<HTMLDivElement>(null);
+export const Navbar = forwardRef<HTMLDivElement, NavbarProps>(({ children, className }, ref) => {
+  // const ref = useRef<HTMLDivElement>(null); // Removed, as ref is now passed via forwardRef
   const { scrollY } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -82,7 +83,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
       )}
     </motion.div>
   );
-};
+});
 
 export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   return (
