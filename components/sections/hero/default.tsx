@@ -83,7 +83,7 @@ export default function Hero({
               <AnimatedTooltipPreview />
             </div>
             {/* Afficher AnimatedGradientTextDemo sur mobile, cacher à partir de md */}
-            <div className="block md:hidden -mt-40">
+            <div className="block md:hidden -mt-20">
               <AnimatedGradientTextDemo />
             </div>
           </div>
