@@ -21,7 +21,7 @@ interface CTAProps {
 }
 
 export default function CTA({
-  title = "Sam building",
+  title = "Samalehbuilding",
   buttons = [
     {
       href: siteConfig.getStartedUrl,
